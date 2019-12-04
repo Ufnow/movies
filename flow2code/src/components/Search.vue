@@ -26,6 +26,14 @@
      </div>
   </div>
 </div>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item" v-for="n in totalPages" :key="n" v-on:click="onChangePage(n)"><a class="page-link" href="#">{{ n }}</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
+
 </div>
 </template>
 
@@ -52,6 +60,9 @@ name: 'Search',
             // images: {
             //     img: require('..\images\no-img\.jpg')
             // }
+           
+            currentPage: 1,
+            totalPages: 1
         };
     
     },
@@ -61,7 +72,7 @@ name: 'Search',
       axios.get(API + apikey + '&query=' + this.searchValue)
       .then((response) => {
         this.results = response.data.results;
-        // console.log(this.results)
+        this.totalPages = response.data.total_pages;
         this.firstinteraction = false;
         if(this.results.length == 0) {
           this.noresults = true
@@ -70,13 +81,21 @@ name: 'Search',
           this.noresults = false
         }
       })
-      // .catch((error) => {
-      //   // console.log(error)
-      // })
+      .catch((error) => {
+        error = true;
+      })
        
         
     },500),
 
+onChangePage(n) {
+       this.currentPage = n;
+       axios.get(API + apikey + '&query=' + this.searchValue + "&page=" + this.currentPage)
+      .then((response) => {
+        this.results = response.data.results;
+        })
+            
+        }
 
 
 }
