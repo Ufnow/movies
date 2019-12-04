@@ -23,9 +23,10 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 600px;
+  width: 100%;
   margin: 0;
+  background-color: gray;
 
 }
-
+@import'~bootstrap/dist/css/bootstrap.css'
 </style>
