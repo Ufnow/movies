@@ -26,11 +26,11 @@
      </div>
   </div>
 </div>
-<nav aria-label="Page navigation example">
+<nav aria-label="Page navigation" v-if="totalPages>1">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#" v-on:click="onChangePage(currentPage-1)">Previous</a></li>
-    <li class="page-item" v-for="n in totalPages" :key="n" v-on:click="onChangePage(n)"><a class="page-link" href="#">{{ n }}</a></li>
-    <li class="page-item"><a class="page-link" href="#" v-on:click="onChangePage(currentPage+1)">Next</a></li>
+    <li class="page-item"><a class="page-link text-secondary" href="#" v-on:click="onChangePage(currentPage-1)">Previous</a></li>
+    <li class="page-item" v-for="n in totalPages" :key="n" v-on:click="onChangePage(n)"><a class="page-link text-secondary" href="#">{{ n }}</a></li>
+    <li class="page-item"><a class="page-link text-secondary" href="#" v-on:click="onChangePage(currentPage+1)">Next</a></li>
   </ul>
   <p class = "current-page">Current page: {{currentPage}}</p>
 </nav>
@@ -58,6 +58,7 @@ name: 'Search',
             results: [],
             firstinteraction: true,
             noresults: false,
+            loaded = false,
             // images: {
             //     img: require('..\images\no-img\.jpg')
             // }
@@ -74,6 +75,9 @@ name: 'Search',
       .then((response) => {
         this.results = response.data.results;
         this.totalPages = response.data.total_pages;
+        if(this.totalPages>10) {
+          this.totalPages = 10
+        }
         this.firstinteraction = false;
         if(this.results.length == 0) {
           this.noresults = true
@@ -186,4 +190,6 @@ img {
  background: transparent;
 	
 }
+
+
 </style>
