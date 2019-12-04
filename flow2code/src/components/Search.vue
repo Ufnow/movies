@@ -28,10 +28,11 @@
 </div>
 <nav aria-label="Page navigation example">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#" v-on:click="onChangePage(currentPage-1)">Previous</a></li>
     <li class="page-item" v-for="n in totalPages" :key="n" v-on:click="onChangePage(n)"><a class="page-link" href="#">{{ n }}</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    <li class="page-item"><a class="page-link" href="#" v-on:click="onChangePage(currentPage+1)">Next</a></li>
   </ul>
+  <p class = "current-page">Current page: {{currentPage}}</p>
 </nav>
 
 </div>
@@ -90,16 +91,32 @@ name: 'Search',
 
 onChangePage(n) {
        this.currentPage = n;
+       if(this.currentPage >0 && this.currentPage<this.totalPages) {
+        
+       
        axios.get(API + apikey + '&query=' + this.searchValue + "&page=" + this.currentPage)
       .then((response) => {
         this.results = response.data.results;
         })
             
-        }
+    } else if(this.currentPage == 0) {
+      this.currentPage = this.currentPage +1
 
+    }
+    else if(this.currentPage >= this.totalPages) {
+      this.currentPage = this.totalPages 
+
+    }
+    
+    }
+
+}  ,
 
 }
-}
+
+
+
+
 /* eslint-disable */
 </script>
 
