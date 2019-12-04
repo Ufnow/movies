@@ -1,17 +1,20 @@
 <template>
   <div id ="app">
-    
-  <Home />
+     <div class = "title">
+      <h1>Welcome to my Movie Search app</h1>
+      <p>Lets find your movies!</p>
+      </div>
+  <Search />
   </div>
 </template>
 
 <script>
-import Home from './components/Home.vue'
+import Search from './components/Search.vue'
 
 export default {
   name: 'app',
   components: {
-    Home
+    Search
   }
 }
 
@@ -25,8 +28,24 @@ export default {
   align-items: center;
   width: 100%;
   margin: 0;
-  background-color: gray;
+ 
+  font-family: 'Montserrat', sans-serif;
+  
 
 }
-@import'~bootstrap/dist/css/bootstrap.css'
+.title {
+  padding: 0;
+  margin-bottom:30px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  width: 100%;
+  color: white;
+  height: 130px;
+  background: rgb(26, 25, 25);;
+}
+@import'~bootstrap/dist/css/bootstrap.css';
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700,800i&display=swap');
+
 </style>
