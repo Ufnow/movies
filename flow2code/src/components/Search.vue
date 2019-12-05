@@ -13,6 +13,7 @@
 </div>
 <pulse-loader v-if="!loaded"></pulse-loader>
   <div class = "wrapper" v-if ="loaded">
+    <div class = "movie-container">
   <div class="card" v-for="item in results" :key="item.id">
     <div class="row no-gutters">
       <div class="imgcont">
@@ -27,7 +28,7 @@
      </div>
   </div>
 </div>
-
+</div>
 <nav aria-label="Page navigation" v-if="totalPages>1 && !noresults">
   <ul class="pagination">
     <li class="page-item"><a class="page-link text-secondary" href="#" v-on:click="onChangePage(currentPage-1)">Previous</a></li>
@@ -38,6 +39,7 @@
 </nav>
 </div>
 </div>
+
 </template>
 
 <script>
@@ -113,7 +115,7 @@ name: 'Search',
 onChangePage(n) {
        this.currentPage = n;
         this.loaded= false;
-       if(this.currentPage >0 && this.currentPage<this.totalPages) {
+       if(this.currentPage >0 && this.currentPage<=this.totalPages) {
         axios.get(API + apikey + '&query=' + this.searchValue + "&page=" + this.currentPage)
           .then((response) => {
         this.results = response.data.results;
@@ -123,14 +125,14 @@ onChangePage(n) {
       this.currentPage = this.currentPage +1
 
     }
-    else if(this.currentPage >= this.totalPages) {
-      this.currentPage = this.totalPages 
+    else if(this.currentPage > this.totalPages) {
+      this.currentPage = this.currentPage -1
 
     }
      this.loaded= true;
     }
 
-}  ,
+}  
 
 }
 
@@ -150,6 +152,28 @@ onChangePage(n) {
   height: 100%;
   
   
+}
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+ 
+  
+
+
+}
+.movie-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-bottom: 15px; 
+
+
 }
 .row {
   background: rgb(240, 239, 239)
