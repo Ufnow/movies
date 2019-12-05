@@ -53,7 +53,7 @@
 </template>
 
 <script>
-/* eslint-disable */
+
 import axios from 'axios';
 import debounce  from 'lodash.debounce';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
@@ -140,7 +140,7 @@ sortByTitle() {
       .then((response) => {
         this.results = response.data.results;
         this.totalPages = response.data.total_pages;
-        console.log(this.results.id)
+        
         if(this.totalPages>10) {
           this.totalPages = 10
         }
