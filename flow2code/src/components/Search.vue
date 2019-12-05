@@ -17,7 +17,7 @@
   <div class="card" v-for="item in results" :key="item.id">
     <div class="row no-gutters">
       <div class="imgcont">
-        <img :src="'http://image.tmdb.org/t/p/w185' + item.poster_path" onerror="this.onerror=null; this.src='.\.\/images/img.noimg'" class="card-img" alt="...">
+        <img :src="'http://image.tmdb.org/t/p/w185' + item.poster_path" onerror="this.onerror=null; this.src='https://semantic-ui.com/images/wireframe/image.png'" class="card-img" >
       </div>
     <div class="content">
        <div class="card-body">
@@ -59,14 +59,14 @@ export default {
 name: 'Search',
   components: {
     PulseLoader
-  }, 
+  },
+
     data () {
         return {
             searchValue: '',
             results: [],
             firstinteraction: true,
             noresults: false,
-            
            
            //pagination
             currentPage: 1,
@@ -87,7 +87,7 @@ name: 'Search',
     handleInput: debounce(function() {
       if(!this.searchValue == ''){
 
-      
+        this.firstinteraction = false;
       this.loaded = false;
       axios.get(API + apikey + '&query=' + this.searchValue)
       .then((response) => {
@@ -96,7 +96,7 @@ name: 'Search',
         if(this.totalPages>10) {
           this.totalPages = 10
         }
-        this.firstinteraction = false;
+      
         this.loaded= true;
         if(this.results.length == 0) {
           this.noresults = true
@@ -205,12 +205,7 @@ img {
   margin:0;
   
 }
-.card-body{
-  /* display: flex; */
-  /* flex-direction: column; */
-   
-  /* word-wrap: word-wrap; */
-}
+
 
 
 .interactions {
@@ -230,6 +225,84 @@ img {
  background: transparent;
 	
 }
+nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+@media screen and (max-width:650px) {
 
+
+.card {
+  width: 100%;
+  
+  }
+
+.imgcont {
+height: 190px;
+width: 150px;
+
+}
+.content{
+  max-width:340px;
+  padding:0;
+  margin:0;
+  
+  
+}
+.card-title {
+  font-size:80%;
+}
+.card-text {
+  font-size:70%;
+}
+
+
+}
+@media screen and (max-width:540px) {
+.page-link {
+  font-size: 30%;
+}
+
+.interactions {
+  font-size:95%;
+  text-align: center;
+  }
+
+
+.content{
+  max-width:280px;
+  
+  
+  
+}}
+@media screen and (max-width:450px) {
+.imgcont {
+height: 140px;
+width: 100px;
+
+}}
+
+@media screen and (max-width:360px) {
+.imgcont {
+height: 110px;
+width: 70px;
+
+}
+.card-title {
+  font-size:80%;
+}
+.card-text {
+  font-size:50%;
+}
+.content{
+  max-width:250px;
+  
+  
+  
+}
+}
 
 </style>

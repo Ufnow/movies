@@ -1,7 +1,7 @@
 <template>
   <div id ="app">
      <div class = "title">
-      <h1>Welcome to my Movie Search app</h1>
+      <h1 class = "main-title">Welcome to my Movie Search app</h1>
       <p>Lets find your movies!</p>
       </div>
   <Search />
@@ -44,6 +44,16 @@ export default {
   color: white;
   height: 130px;
   background: rgb(26, 25, 25);;
+}
+
+@media screen and (max-width:500px) {
+  .title {
+    font-size: 70%;
+  }
+  .main-title {
+    font-size: 180%;
+  }
+
 }
 @import'~bootstrap/dist/css/bootstrap.css';
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700,800i&display=swap');
