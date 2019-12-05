@@ -392,6 +392,7 @@ width: 70px;
   
   
 }
+
 }
 
 </style>
