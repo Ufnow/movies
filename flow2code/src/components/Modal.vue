@@ -22,7 +22,7 @@
                 {{ pc.name }}</span>
                 <span v-if="item.production_countries.length == 0">No informations</span>
                 </p>
-             <a :href="'https://www.imdb.com/title/' + item.imdb_id" class="btn btn-danger" role="button">IMDB</a>
+             <a :href="'https://www.imdb.com/title/' + item.imdb_id" class="btn btn-danger" role="button">IMDB link</a>
       </div>
     </div>
     <div class="close" @click="$emit('closeModal')" />

@@ -2,6 +2,10 @@
   <div class="main">
    <div class="search">
        <input name="search" placeholder="Enter your title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your title'"  id="search" v-model="searchValue" @input="handleInput"/>
+ </div>
+ <div class = "sortbuttons" v-if="results.length != 0">
+  <button type="button" id="details-btn" class="btn btn-dark" v-on:click="sortByPopularity()">Sort by popularity</button>
+  <button type="button" id="details-btn" class="btn btn-dark" v-on:click="sortByTitle()">Sort by title</button>
   </div>
   <div class = "interactions" v-if="firstinteraction">
        <p>Enter your title to search the movies</p>
@@ -75,38 +79,57 @@ name: 'Search',
             results: [],
             firstinteraction: true,
             noresults: false,
-            details: [],
-
-           modalOpen: false,
-           modalItem: null,
+            modalOpen: false,
+            modalItem: null,
+           clickCount: 0,
            //pagination
             currentPage: 1,
             totalPages: 1,
       
          //loader
             loaded: true,
-            color: '#black',
-            height: '70px',
-            width: '10px',
+            
         };
     
     },
     methods: {
-    
+      
+      
+  // Sorting methods    
+  sortByPopularity() {
+  this.clickCount = this.clickCount +1
+  if(this.clickCount % 2 != 0) {
+  this.results.sort((a,b) => a.popularity < b.popularity ? 1 : -1);
+  }
+  else {
+    this.results.sort((a,b) => a.popularity > b.popularity ? 1 : -1);
+  }
+}, 
+
+sortByTitle() {
+  this.clickCount = this.clickCount +1
+  if(this.clickCount % 2 != 0) {
+  this.results.sort((a,b) => a.title < b.title ? 1 : -1);
+  }
+  else {
+    this.results.sort((a,b) => a.title > b.title ? 1 : -1);
+  } 
+     } ,
+
+
+    // Modal open method
     handleModalOpen(item) {
       this.modalOpen = false;
-      // https://api.themoviedb.org/3/movie/299537?api_key=30b2ae883d2dd411cf9fa724a9e129f3
-      axios.get(API_movie_details + '/' + item.id + apikey)
+         axios.get(API_movie_details + '/' + item.id + apikey)
           .then((response) => {
-        
-        
         this.item = response.data
         this.modalOpen = true;
         this.modalItem = this.item
-           })
+                            })
            
            
     },
+
     //Searching
     handleInput: debounce(function() {
       if(!this.searchValue == ''){
@@ -121,16 +144,13 @@ name: 'Search',
         if(this.totalPages>10) {
           this.totalPages = 10
         }
-      
-        this.loaded= true;
+            this.loaded= true;
         if(this.results.length == 0) {
           this.noresults = true
-          
-        }
+          }
         else {
           this.noresults = false
-         
-        }
+         }
         this.currentPage = 1
       })
      }},500),
@@ -157,9 +177,14 @@ onChangePage(n) {
      this.loaded= true;
     }
 
-}  
+} ,
+
+//Sorting methods
+
+
 
 }
+
 
 
 
@@ -231,7 +256,16 @@ img {
   
 }
 
+.sortbuttons {
 
+  /* position: absolute; */
+  left:50px;
+  top:160px;
+}
+.sortbuttons button {
+
+  margin: 3px;
+}
 
 .interactions {
   font-size: 30px;
