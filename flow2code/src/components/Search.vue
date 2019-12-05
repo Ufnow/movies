@@ -1,8 +1,6 @@
 <template>
   <div class="main">
-   
-    
-  <div class="search">
+   <div class="search">
        <input name="search" placeholder="Enter your title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your title'"  id="search" v-model="searchValue" @input="handleInput"/>
   </div>
   <div class = "interactions" v-if="firstinteraction">
@@ -25,15 +23,23 @@
         <p class="card-text">Popularity: {{ item.popularity }}</p>
         <p class="card-text">Votes: {{ item.vote_count }}</p>
        </div>
+     <div class ="btn-cont">
+     <button type="button" id="details-btn" class="btn btn-danger" v-on:click="handleModalOpen(item)">More details</button>
+     </div>
      </div>
   </div>
 </div>
+ <Modal v-if="modalOpen" :item="modalItem" @closeModal="modalOpen = false" />
 </div>
 <nav aria-label="Page navigation" v-if="totalPages>1 && !noresults">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link text-secondary" href="#" v-on:click="onChangePage(currentPage-1)">Previous</a></li>
-    <li class="page-item" v-for="n in totalPages" :key="n" v-on:click="onChangePage(n)"><a class="page-link text-secondary" href="#">{{ n }}</a></li>
-    <li class="page-item"><a class="page-link text-secondary" href="#" v-on:click="onChangePage(currentPage+1)">Next</a></li>
+    <li class="page-item">
+      <a class="page-link text-secondary" href="#" v-on:click="onChangePage(currentPage-1)">Previous</a></li>
+    <li class="page-item" v-for="n in totalPages" :key="n" v-on:click="onChangePage(n)"><a class="page-link text-secondary" href="#">{{ n }}</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link text-secondary" href="#" v-on:click="onChangePage(currentPage+1)">Next</a>
+      </li>
   </ul>
   <p class = "current-page">Current page: {{currentPage}}</p>
 </nav>
@@ -43,11 +49,11 @@
 </template>
 
 <script>
-
+/* eslint-disable */
 import axios from 'axios';
 import debounce  from 'lodash.debounce';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
-
+import Modal from './Modal.vue';
 const API = 'https://api.themoviedb.org/3/search/movie'
 const apikey ='?api_key=30b2ae883d2dd411cf9fa724a9e129f3'
 
@@ -58,7 +64,8 @@ export default {
 
 name: 'Search',
   components: {
-    PulseLoader
+    PulseLoader,
+    Modal
   },
 
     data () {
@@ -68,6 +75,9 @@ name: 'Search',
             firstinteraction: true,
             noresults: false,
            
+
+           modalOpen: false,
+           modalItem: null,
            //pagination
             currentPage: 1,
             totalPages: 1,
@@ -82,7 +92,11 @@ name: 'Search',
     },
     methods: {
     
-    
+    handleModalOpen(item) {
+      this.modalOpen = true;
+      this.modalItem = item;
+      console.log("hi");
+    },
     //Searching
     handleInput: debounce(function() {
       if(!this.searchValue == ''){
@@ -232,6 +246,13 @@ nav {
   justify-content: center;
   text-align: center;
 }
+
+.btn-cont {
+  position: absolute;
+  right:5px;
+  bottom: 5px;
+  }
+
 @media screen and (max-width:650px) {
 
 
@@ -245,6 +266,8 @@ height: 190px;
 width: 150px;
 
 }
+
+
 .content{
   max-width:340px;
   padding:0;
@@ -254,9 +277,12 @@ width: 150px;
 }
 .card-title {
   font-size:80%;
+  margin:0px;
+  padding: 0;
 }
 .card-text {
   font-size:70%;
+  margin:3px;
 }
 
 
@@ -277,13 +303,31 @@ width: 150px;
   
   
   
-}}
+}
+
+#details-btn {
+  font-size: 80%;
+  }
+
+
+}
 @media screen and (max-width:450px) {
 .imgcont {
 height: 140px;
 width: 100px;
 
-}}
+}
+button {
+  font-size: 60%;
+  }
+.card-title {
+  font-size:65%;
+}
+.card-text {
+  font-size:50%;
+}
+
+}
 
 @media screen and (max-width:360px) {
 .imgcont {
