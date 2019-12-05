@@ -9,6 +9,20 @@
         <p class="description">
           {{ description }}
         </p>
+        <p>Genre:  
+            <span v-for="(genre,index) in item.genres" :key="genre.id">
+                <span v-if="index != 0">, </span> 
+                {{ genre.name }}</span>
+                <span v-if="item.genres.length == 0">No informations</span>
+                </p>
+             <p>
+        <p>Production countries:  
+            <span v-for="(pc,index) in item.production_countries" :key="pc.name">
+                <span v-if="index != 0">, </span> 
+                {{ pc.name }}</span>
+                <span v-if="item.production_countries.length == 0">No informations</span>
+                </p>
+             <a :href="'https://www.imdb.com/title/' + item.imdb_id" class="btn btn-danger" role="button">IMDB</a>
       </div>
     </div>
     <div class="close" @click="$emit('closeModal')" />
@@ -36,6 +50,8 @@ export default {
     this.description = this.item.overview.substring(0, 200);
   },
 };
+
+
 </script>
 <style  scoped>
 .outerWrapper {
@@ -111,7 +127,7 @@ margin-right: 20px;
 
 height: 80%;
 
-background: black;
+
 
     }
 }
@@ -124,6 +140,7 @@ height: 100%;;
 .description {
 color: #333;
 text-align: justify;
+min-width: 70%;;
 }
 .title {
 color: #f6f6f6;

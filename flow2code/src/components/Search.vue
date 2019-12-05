@@ -55,6 +55,7 @@ import debounce  from 'lodash.debounce';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import Modal from './Modal.vue';
 const API = 'https://api.themoviedb.org/3/search/movie'
+const API_movie_details = 'https://api.themoviedb.org/3/movie'
 const apikey ='?api_key=30b2ae883d2dd411cf9fa724a9e129f3'
 
 
@@ -74,7 +75,7 @@ name: 'Search',
             results: [],
             firstinteraction: true,
             noresults: false,
-           
+            details: [],
 
            modalOpen: false,
            modalItem: null,
@@ -93,9 +94,18 @@ name: 'Search',
     methods: {
     
     handleModalOpen(item) {
-      this.modalOpen = true;
-      this.modalItem = item;
-      console.log("hi");
+      this.modalOpen = false;
+      // https://api.themoviedb.org/3/movie/299537?api_key=30b2ae883d2dd411cf9fa724a9e129f3
+      axios.get(API_movie_details + '/' + item.id + apikey)
+          .then((response) => {
+        
+        
+        this.item = response.data
+        this.modalOpen = true;
+        this.modalItem = this.item
+           })
+           
+           
     },
     //Searching
     handleInput: debounce(function() {
@@ -107,6 +117,7 @@ name: 'Search',
       .then((response) => {
         this.results = response.data.results;
         this.totalPages = response.data.total_pages;
+        console.log(this.results.id)
         if(this.totalPages>10) {
           this.totalPages = 10
         }
@@ -120,7 +131,7 @@ name: 'Search',
           this.noresults = false
          
         }
-        
+        this.currentPage = 1
       })
      }},500),
 
