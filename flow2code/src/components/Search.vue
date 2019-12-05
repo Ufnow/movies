@@ -11,8 +11,9 @@
 <div class = "interactions" v-if="noresults">
        <p>There is no results</p>
 </div>
-  
-  <div class="card"  v-for="item in results" :key="item.id">
+<pulse-loader v-if="!loaded"></pulse-loader>
+  <div class = "wrapper" v-if ="loaded">
+  <div class="card" v-for="item in results" :key="item.id">
     <div class="row no-gutters">
       <div class="imgcont">
         <img :src="'http://image.tmdb.org/t/p/w185' + item.poster_path" onerror="this.onerror=null; this.src='.\.\/images/img.noimg'" class="card-img" alt="...">
@@ -26,7 +27,8 @@
      </div>
   </div>
 </div>
-<nav aria-label="Page navigation" v-if="totalPages>1">
+
+<nav aria-label="Page navigation" v-if="totalPages>1 && !noresults">
   <ul class="pagination">
     <li class="page-item"><a class="page-link text-secondary" href="#" v-on:click="onChangePage(currentPage-1)">Previous</a></li>
     <li class="page-item" v-for="n in totalPages" :key="n" v-on:click="onChangePage(n)"><a class="page-link text-secondary" href="#">{{ n }}</a></li>
@@ -34,14 +36,15 @@
   </ul>
   <p class = "current-page">Current page: {{currentPage}}</p>
 </nav>
-
+</div>
 </div>
 </template>
 
 <script>
-/* eslint-disable */
+
 import axios from 'axios';
 import debounce  from 'lodash.debounce';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 const API = 'https://api.themoviedb.org/3/search/movie'
 const apikey ='?api_key=30b2ae883d2dd411cf9fa724a9e129f3'
@@ -50,27 +53,40 @@ const apikey ='?api_key=30b2ae883d2dd411cf9fa724a9e129f3'
 
 
 export default {
+
 name: 'Search',
-    
+  components: {
+    PulseLoader
+  }, 
     data () {
         return {
             searchValue: '',
             results: [],
             firstinteraction: true,
             noresults: false,
-            loaded = false,
-            // images: {
-            //     img: require('..\images\no-img\.jpg')
-            // }
+            
            
+           //pagination
             currentPage: 1,
-            totalPages: 1
+            totalPages: 1,
+      
+         //loader
+            loaded: true,
+            color: '#black',
+            height: '70px',
+            width: '10px',
         };
     
     },
     methods: {
     
+    
+    //Searching
     handleInput: debounce(function() {
+      if(!this.searchValue == ''){
+
+      
+      this.loaded = false;
       axios.get(API + apikey + '&query=' + this.searchValue)
       .then((response) => {
         this.results = response.data.results;
@@ -79,29 +95,29 @@ name: 'Search',
           this.totalPages = 10
         }
         this.firstinteraction = false;
+        this.loaded= true;
         if(this.results.length == 0) {
           this.noresults = true
+          
         }
         else {
           this.noresults = false
+         
         }
-      })
-      .catch((error) => {
-        error = true;
-      })
-       
         
-    },500),
+      })
+     }},500),
 
+
+//Pagination method
 onChangePage(n) {
        this.currentPage = n;
+        this.loaded= false;
        if(this.currentPage >0 && this.currentPage<this.totalPages) {
-        
-       
-       axios.get(API + apikey + '&query=' + this.searchValue + "&page=" + this.currentPage)
-      .then((response) => {
+        axios.get(API + apikey + '&query=' + this.searchValue + "&page=" + this.currentPage)
+          .then((response) => {
         this.results = response.data.results;
-        })
+           })
             
     } else if(this.currentPage == 0) {
       this.currentPage = this.currentPage +1
@@ -111,7 +127,7 @@ onChangePage(n) {
       this.currentPage = this.totalPages 
 
     }
-    
+     this.loaded= true;
     }
 
 }  ,
@@ -121,7 +137,7 @@ onChangePage(n) {
 
 
 
-/* eslint-disable */
+
 </script>
 
 <style scooped>

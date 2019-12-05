@@ -4,6 +4,9 @@ import 'bootstrap';
 import JwPagination from 'jw-vue-pagination';
 
 
+
+
+
 Vue.component('jw-pagination', JwPagination);
 Vue.config.productionTip = false
 
