@@ -1,5 +1,16 @@
 # flow2code
+##Framweok
+```
+VueJs
+```
 
+##Addional packages
+```
+-axios
+-loadash.debounce
+-bootstrap
+-pulse loader
+```
 ## Project setup
 ```
 npm install
@@ -22,3 +33,5 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
