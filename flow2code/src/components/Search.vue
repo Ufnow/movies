@@ -1,7 +1,7 @@
 <template>
   <div class="main">
    <div class="search">
-       <input name="search" placeholder="Enter your title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your title'"  id="search" v-model="searchValue" @input="handleInput"/>
+       <input name="search" placeholder="Enter your title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your title'"  id="search" v-model.trim="searchValue" @input="handleInput"/>
  </div>
  <div class = "sortbuttons" v-if="results.length != 0">
   <button type="button" id="details-btn" class="btn btn-dark" v-on:click="sortByPopularity()">Sort by popularity</button>
